@@ -1,0 +1,340 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WhatsApp iOS</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",Arial,sans-serif;
+  background:#e9e9ed;color:#111;
+}
+.app{
+  width:100%;max-width:480px;height:100dvh;
+  margin:auto;background:#fff;position:relative;
+  display:flex;flex-direction:column;overflow:hidden;
+}
+.status{
+  height:48px;padding:14px 25px 5px;
+  display:flex;justify-content:space-between;
+  font-size:14px;font-weight:650;
+}
+.status-icons{letter-spacing:3px}
+.header{padding:8px 18px 12px}
+.topline{display:flex;justify-content:space-between;align-items:center}
+h1{font-size:32px;font-weight:750;letter-spacing:-1px}
+.actions{display:flex;gap:19px;font-size:23px;color:#168b58}
+.actions button{border:0;background:none;font-size:23px;color:#168b58;cursor:pointer}
+.search{
+  background:#f1f1f5;border-radius:11px;
+  margin-top:15px;padding:10px 13px;
+  display:flex;gap:9px;color:#888;
+}
+.search input{border:0;outline:none;background:transparent;width:100%;font-size:16px}
+.filters{display:flex;gap:9px;margin-top:14px}
+.filter{
+  padding:7px 15px;border-radius:20px;
+  background:#f2f2f5;color:#555;font-size:13px;
+  border:1px solid transparent;cursor:pointer;
+}
+.filter.active{background:#dff5e9;color:#087d46;border-color:#bce8ce}
+.content{flex:1;overflow-y:auto}
+.chat{
+  display:flex;align-items:center;padding:11px 17px;
+  gap:12px;cursor:pointer;min-height:77px;
+}
+.chat:active{background:#eee}
+.avatar{
+  width:53px;height:53px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:23px;flex-shrink:0;color:white;
+}
+.details{flex:1;min-width:0;border-bottom:1px solid #eee;padding-bottom:12px}
+.chat-top{display:flex;justify-content:space-between;gap:8px}
+.name{font-size:16px;font-weight:650}
+.time{font-size:11px;color:#888}
+.preview{display:flex;justify-content:space-between;align-items:center;margin-top:6px}
+.message-preview{font-size:13px;color:#888;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.unread{
+  background:#25b968;color:white;border-radius:20px;
+  min-width:20px;height:20px;display:flex;
+  align-items:center;justify-content:center;font-size:11px;padding:0 5px;
+}
+.bottom{
+  height:75px;border-top:1px solid #eee;background:#fafafa;
+  display:flex;justify-content:space-around;align-items:center;
+  padding-bottom:8px;flex-shrink:0;
+}
+.tab{
+  display:flex;flex-direction:column;align-items:center;
+  gap:4px;font-size:10px;color:#888;cursor:pointer;
+  min-width:55px;
+}
+.tab .ico{font-size:22px}
+.tab.active{color:#159957}
+.chat-screen{display:none;flex-direction:column;flex:1;min-height:0}
+.chat-header{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 14px;border-bottom:1px solid #eee;
+}
+.back{border:0;background:none;color:#168b58;font-size:25px;cursor:pointer}
+.chat-person{display:flex;align-items:center;gap:9px;flex:1}
+.chat-person .avatar{width:39px;height:39px;font-size:18px}
+.chat-person strong{font-size:15px}
+.online{font-size:11px;color:#888;margin-top:3px}
+.call-actions{display:flex;gap:17px;font-size:21px;color:#168b58}
+.chat-wallpaper{
+  flex:1;overflow-y:auto;padding:20px 13px;
+  background:#f3f1ec;
+  display:flex;flex-direction:column;gap:10px;
+}
+.date{text-align:center;font-size:11px;color:#777;background:#fff;
+  padding:6px 12px;border-radius:8px;align-self:center;margin-bottom:8px}
+.bubble{
+  max-width:80%;padding:9px 11px;border-radius:12px;
+  font-size:14px;line-height:1.4;position:relative;
+  box-shadow:0 1px 1px #0001;
+}
+.received{background:white;align-self:flex-start;border-top-left-radius:3px}
+.sent{background:#d9fdd3;align-self:flex-end;border-top-right-radius:3px}
+.msgtime{text-align:right;font-size:10px;color:#888;margin-top:4px}
+.compose{
+  display:flex;align-items:center;gap:9px;
+  padding:10px;background:#f9f9f9;
+}
+.compose button{border:0;background:none;font-size:23px;color:#168b58;cursor:pointer}
+.compose input{
+  flex:1;border:1px solid #ddd;border-radius:22px;
+  padding:11px 14px;outline:none;font-size:15px;background:white;
+}
+.send{
+  background:#168b58!important;color:white!important;
+  width:37px;height:37px;border-radius:50%;
+  font-size:17px!important;
+}
+.page{display:none;flex:1;overflow:auto;padding:22px 18px}
+.page h2{font-size:30px;margin-bottom:20px}
+.setting{
+  padding:17px 12px;border-bottom:1px solid #eee;
+  font-size:16px;display:flex;justify-content:space-between;
+}
+.empty{text-align:center;padding:75px 25px;color:#888}
+.empty span{font-size:45px;display:block;margin-bottom:15px}
+@media(min-width:600px){
+ .app{height:94vh;margin:3vh auto;border-radius:18px;box-shadow:0 8px 35px #0002}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<div class="status">
+  <span>9:41</span>
+  <span class="status-icons">●  WiFi  ▰</span>
+</div>
+
+<div class="header" id="mainHeader">
+  <div class="topline">
+    <h1>Chats</h1>
+    <div class="actions">
+      <button onclick="alert('Camera')">◎</button>
+      <button onclick="newChat()">＋</button>
+    </div>
+  </div>
+  <div class="search">
+    <span>⌕</span>
+    <input id="search" placeholder="Search" oninput="filterChats()">
+  </div>
+  <div class="filters">
+    <button class="filter active" onclick="setFilter(this,'all')">All</button>
+    <button class="filter" onclick="setFilter(this,'unread')">Unread</button>
+    <button class="filter" onclick="setFilter(this,'favorites')">Favorites</button>
+    <button class="filter" onclick="setFilter(this,'groups')">Groups</button>
+  </div>
+</div>
+
+<div class="content" id="chatList"></div>
+
+<div class="chat-screen" id="chatScreen">
+  <div class="chat-header">
+    <button class="back" onclick="closeChat()">‹</button>
+    <div class="chat-person">
+      <div class="avatar" id="personAvatar"></div>
+      <div>
+        <strong id="personName"></strong>
+        <div class="online" id="personStatus">online</div>
+      </div>
+    </div>
+    <div class="call-actions"><span>▣</span><span>☎</span></div>
+  </div>
+  <div class="chat-wallpaper" id="messages">
+    <div class="date">TODAY</div>
+  </div>
+  <div class="compose">
+    <button onclick="alert('Attachments')">＋</button>
+    <input id="messageInput" placeholder="Message" onkeydown="if(event.key==='Enter')sendMessage()">
+    <button class="send" onclick="sendMessage()">➤</button>
+  </div>
+</div>
+
+<div class="page" id="otherPage"></div>
+
+<div class="bottom">
+  <div class="tab active" onclick="showTab('chats',this)">
+    <span class="ico">◉</span><span>Chats</span>
+  </div>
+  <div class="tab" onclick="showTab('updates',this)">
+    <span class="ico">◌</span><span>Updates</span>
+  </div>
+  <div class="tab" onclick="showTab('communities',this)">
+    <span class="ico">♧</span><span>Communities</span>
+  </div>
+  <div class="tab" onclick="showTab('calls',this)">
+    <span class="ico">☎</span><span>Calls</span>
+  </div>
+  <div class="tab" onclick="showTab('settings',this)">
+    <span class="ico">⚙</span><span>Settings</span>
+  </div>
+</div>
+</div>
+
+<script>
+const chats=[
+ {name:"Sarah Williams",avatar:"👩🏻",color:"#db9a9a",msg:"Hey! How are you doing?",time:"9:35 AM",unread:2,favorite:true},
+ {name:"Alex Johnson",avatar:"👨🏻",color:"#8cabc5",msg:"Let's meet tomorrow!",time:"9:20 AM",unread:1},
+ {name:"Design Team",avatar:"🎨",color:"#927cc2",msg:"You: New design looks amazing!",time:"8:45 AM",group:true},
+ {name:"Mom ❤️",avatar:"👩🏻‍🦰",color:"#d79c6c",msg:"Don't forget to eat!",time:"Yesterday",unread:0,favorite:true},
+ {name:"David Miller",avatar:"👨🏽",color:"#78a99b",msg:"Sent you a photo",time:"Yesterday",unread:0},
+ {name:"Travel Buddies",avatar:"🌍",color:"#6c9eb8",msg:"Emma: That trip was incredible!",time:"Yesterday",group:true},
+ {name:"Emma Wilson",avatar:"👩🏼",color:"#c28db3",msg:"Thank you so much 😊",time:"Monday",unread:0},
+ {name:"John Smith",avatar:"👨🏻‍🦱",color:"#a59b7a",msg:"See you soon!",time:"Monday",unread:0}
+];
+
+let current=null;
+let activeFilter='all';
+let conversations={};
+
+function renderChats(){
+ const list=document.getElementById('chatList');
+ const query=document.getElementById('search').value.toLowerCase();
+ list.innerHTML='';
+ chats.filter(c=>{
+  const match=c.name.toLowerCase().includes(query);
+  const filter=activeFilter==='all'||
+   (activeFilter==='unread'&&c.unread)||
+   (activeFilter==='favorites'&&c.favorite)||
+   (activeFilter==='groups'&&c.group);
+  return match&&filter;
+ }).forEach(c=>{
+  const div=document.createElement('div');
+  div.className='chat';
+  div.innerHTML=`
+   <div class="avatar" style="background:${c.color}">${c.avatar}</div>
+   <div class="details">
+    <div class="chat-top">
+     <span class="name">${c.name}</span>
+     <span class="time">${c.time}</span>
+    </div>
+    <div class="preview">
+     <span class="message-preview">${c.msg}</span>
+     ${c.unread?`<span class="unread">${c.unread}</span>`:''}
+    </div>
+   </div>`;
+  div.onclick=()=>openChat(c);
+  list.appendChild(div);
+ });
+}
+function filterChats(){renderChats()}
+function setFilter(btn,filter){
+ document.querySelectorAll('.filter').forEach(b=>b.classList.remove('active'));
+ btn.classList.add('active');activeFilter=filter;renderChats();
+}
+function openChat(c){
+ current=c;
+ c.unread=0;
+ document.getElementById('mainHeader').style.display='none';
+ document.getElementById('chatList').style.display='none';
+ document.getElementById('otherPage').style.display='none';
+ document.getElementById('chatScreen').style.display='flex';
+ document.getElementById('personName').textContent=c.name;
+ document.getElementById('personAvatar').textContent=c.avatar;
+ document.getElementById('personAvatar').style.background=c.color;
+ document.getElementById('personStatus').textContent=c.group?'Group':'online';
+ renderMessages();
+}
+function closeChat(){
+ document.getElementById('chatScreen').style.display='none';
+ document.getElementById('mainHeader').style.display='block';
+ document.getElementById('chatList').style.display='block';
+ renderChats();
+}
+function renderMessages(){
+ const box=document.getElementById('messages');
+ box.innerHTML='<div class="date">TODAY</div>';
+ const msgs=conversations[current.name]||[
+  {text:current.msg,received:true,time:'9:35 AM'},
+  {text:'Hey! Great to hear from you 😊',received:false,time:'9:38 AM'}
+ ];
+ msgs.forEach(m=>{
+  const div=document.createElement('div');
+  div.className='bubble '+(m.received?'received':'sent');
+  const text=document.createElement('span');
+  text.textContent=m.text;
+  div.appendChild(text);
+  const time=document.createElement('div');
+  time.className='msgtime';
+  time.textContent=m.time;
+  div.appendChild(time);
+  box.appendChild(div);
+ });
+ box.scrollTop=box.scrollHeight;
+}
+function sendMessage(){
+ const input=document.getElementById('messageInput');
+ const text=input.value.trim();
+ if(!text||!current)return;
+ if(!conversations[current.name])conversations[current.name]=[
+  {text:current.msg,received:true,time:'9:35 AM'}
+ ];
+ conversations[current.name].push({text,received:false,time:'Now'});
+ current.msg='You: '+text;
+ current.time='Now';
+ input.value='';
+ renderMessages();
+}
+function newChat(){
+ const name=prompt('Enter contact name:');
+ if(!name)return;
+ let c=chats.find(x=>x.name.toLowerCase()===name.toLowerCase());
+ if(!c){
+  c={name,avatar:'👤',color:'#8fae9d',msg:'Start a conversation',time:'Now',unread:0};
+  chats.unshift(c);
+ }
+ openChat(c);
+}
+function showTab(tab,el){
+ document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+ el.classList.add('active');
+ document.getElementById('chatScreen').style.display='none';
+ document.getElementById('mainHeader').style.display='none';
+ document.getElementById('chatList').style.display='none';
+ const page=document.getElementById('otherPage');
+ page.style.display='block';
+ const data={
+  updates:`<h2>Updates</h2><div class="setting">◉ My Status <span>＋</span></div><h3 style="margin:22px 0">Recent updates</h3><p style="color:#888">No recent updates</p>`,
+  communities:`<h2>Communities</h2><div class="setting">♧ New Community <span>＋</span></div><div class="empty"><span>♧</span>Stay connected with your communities</div>`,
+  calls:`<h2>Calls</h2><div class="setting">Recent calls <span>☎</span></div><div class="empty"><span>☎</span>Your recent calls will appear here</div>`,
+  settings:`<h2>Settings</h2><div class="setting">👤 Profile <span>›</span></div><div class="setting">🔒 Privacy <span>›</span></div><div class="setting">💬 Chats <span>›</span></div><div class="setting">🔔 Notifications <span>›</span></div><div class="setting">📦 Storage and Data <span>›</span></div><div class="setting">❓ Help <span>›</span></div><div class="setting">❤️ Tell a Friend <span>›</span></div>`
+ };
+ if(tab==='chats'){
+  page.style.display='none';
+  document.getElementById('mainHeader').style.display='block';
+  document.getElementById('chatList').style.display='block';
+ }else page.innerHTML=data[tab];
+}
+renderChats();
+</script>
+</body>
+</html>
